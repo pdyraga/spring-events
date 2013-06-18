@@ -62,7 +62,7 @@ public class SimpleEventBusTest {
     }
 
     @Test
-    public void shouldPublishToRegisteredHandlers() {
+    public void shouldPublishToAppropriateHandlers() {
         final SimpleEventBus eventBus = new SimpleEventBus();
 
         eventBus.addHandler(MockAEvent.class, new MockHandler<MockAEvent>());
