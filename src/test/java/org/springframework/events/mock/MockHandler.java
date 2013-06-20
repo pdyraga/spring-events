@@ -17,11 +17,13 @@
 package org.springframework.events.mock;
 
 import org.springframework.events.Event;
+import org.springframework.events.annotation.EventHandler;
 
-public final class MockHandler<E extends AbstractMockEvent> implements
+public class MockHandler<E extends AbstractMockEvent> implements
         Event.Handler<E> {
 
     @Override
+    @EventHandler
     public void handleEvent(final E event) {
         event.setHandled(true);
     }
