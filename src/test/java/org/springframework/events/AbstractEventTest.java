@@ -24,8 +24,9 @@ import static org.easymock.EasyMock.expectLastCall;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
 
-import org.springframework.events.Event.AbstractEvent;
 import org.springframework.events.Event.Handler;
+import org.springframework.events.mock.MockAEvent;
+import org.springframework.events.mock.MockBEvent;
 
 public class AbstractEventTest {
 
@@ -33,14 +34,14 @@ public class AbstractEventTest {
     public void shouldDispatchToApplicableHandler() {
         final MockDelegate mockDelegate = createMock(MockDelegate.class);
 
-        final Handler<TestAEvent> handler = new Handler<TestAEvent>() {
+        final Handler<MockAEvent> handler = new Handler<MockAEvent>() {
             @Override
-            public void handleEvent(final TestAEvent event) {
+            public void handleEvent(final MockAEvent event) {
                 mockDelegate.onEventDispatched(event);
             }
         };
 
-        final Event event = new TestAEvent();
+        final Event event = new MockAEvent("");
         mockDelegate.onEventDispatched(same(event));
         expectLastCall();
 
@@ -51,28 +52,14 @@ public class AbstractEventTest {
 
     @Test(expected=IllegalArgumentException.class)
     public void shouldNotDispatchToInapplicableHandler() {
-        final Handler<TestBEvent> handler = new Handler<TestBEvent>() {
+        final Handler<MockBEvent> handler = new Handler<MockBEvent>() {
             @Override
-            public void handleEvent(final TestBEvent event) {
+            public void handleEvent(final MockBEvent event) {
 
             }
         };
 
-        new TestAEvent().dispatch(handler);
-    }
-
-    public static class TestAEvent extends AbstractEvent<String> {
-        @Override
-        public String getSource() {
-            return "";
-        }
-    }
-
-    public static class TestBEvent extends AbstractEvent<String> {
-        @Override
-        public String getSource() {
-            return "";
-        }
+        new MockAEvent("").dispatch(handler);
     }
 
     /**

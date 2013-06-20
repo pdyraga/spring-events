@@ -22,7 +22,10 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import org.springframework.events.Event.AbstractEvent;
+import org.springframework.events.mock.MockAEvent;
+import org.springframework.events.mock.MockBEvent;
+import org.springframework.events.mock.MockCEvent;
+import org.springframework.events.mock.MockHandler;
 
 public class SimpleEventBusTest {
 
@@ -91,63 +94,4 @@ public class SimpleEventBusTest {
         eventBus.publish(mockAEvent);
         assertFalse("Event A handled", mockAEvent.isHandled());
     }
-
-    public static class MockAEvent extends AbstractMockEvent {
-
-        public MockAEvent(String string) {
-            super(string);
-        }
-
-    }
-
-    public static class MockBEvent extends AbstractMockEvent {
-
-        public MockBEvent(String string) {
-            super(string);
-        }
-
-    }
-
-    public static class MockCEvent extends AbstractMockEvent {
-
-        public MockCEvent(String string) {
-            super(string);
-        }
-
-    }
-
-    public static abstract class AbstractMockEvent extends
-            AbstractEvent<String> {
-
-        private final String source;
-
-        private boolean handled;
-
-        public AbstractMockEvent(final String source) {
-            this.source = source;
-        }
-
-        @Override
-        public String getSource() {
-            return source;
-        }
-
-        public boolean isHandled() {
-            return handled;
-        }
-
-        public void setHandled(final boolean handled) {
-            this.handled = handled;
-        }
-    }
-
-    public static class MockHandler<E extends AbstractMockEvent> implements
-            Event.Handler<E> {
-
-        @Override
-        public void handleEvent(final E event) {
-            event.setHandled(true);
-        }
-    }
-
 }

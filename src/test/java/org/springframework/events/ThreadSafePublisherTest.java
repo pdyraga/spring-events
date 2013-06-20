@@ -24,9 +24,9 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import org.springframework.events.BroadcastPublisherTest.MockAEvent;
-import org.springframework.events.BroadcastPublisherTest.MockHandler;
 import org.springframework.events.Event.Handler;
+import org.springframework.events.mock.MockAEvent;
+import org.springframework.events.mock.MockHandler;
 
 import static org.easymock.EasyMock.*;
 import static org.junit.Assert.assertNotNull;
