@@ -21,10 +21,10 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 import org.springframework.events.annotation.EventHandler;
+import org.springframework.events.mock.MockAEvent;
+import org.springframework.events.mock.MockBEvent;
+import org.springframework.events.mock.MockCEvent;
 import org.springframework.stereotype.Component;
-
-import org.springframework.events.Event.AbstractEvent;
-import org.springframework.events.context.EventHandlerAdapter;
 
 public class EventHandlerAdapterTest {
 
@@ -38,11 +38,11 @@ public class EventHandlerAdapterTest {
         final EventHandlerAdapter adapter = new EventHandlerAdapter(adaptee);
 
         adapter.handleEvent(mockAEvent);
-        assertTrue("Event A was not handled", mockAEvent.getSource());
+        assertTrue("Event A was not handled", mockAEvent.isHandled());
         adapter.handleEvent(mockBEvent);
-        assertTrue("Event B was not handled", mockBEvent.getSource());
+        assertTrue("Event B was not handled", mockBEvent.isHandled());
         adapter.handleEvent(mockCEvent);
-        assertFalse("Event C was handled", mockCEvent.getSource());
+        assertFalse("Event C was handled", mockCEvent.isHandled());
     }
 
     @Component
@@ -54,47 +54,19 @@ public class EventHandlerAdapterTest {
 
         @EventHandler
         public void handleMockEvent(final MockAEvent event) {
-            event.setSource(Boolean.TRUE);
+            event.setHandled(Boolean.TRUE);
         }
 
 
         @EventHandler
         public void handleMockEvent(final MockBEvent event) {
-            event.setSource(Boolean.TRUE);
+            event.setHandled(Boolean.TRUE);
         }
 
         // not annotated with @EventHandler
         public void handle(final MockCEvent event) {
-            event.setSource(Boolean.TRUE);
+            event.setHandled(Boolean.TRUE);
         }
 
     }
-
-    public static class BaseMockEvent extends AbstractEvent<Boolean> {
-
-        private Boolean source = Boolean.FALSE;
-
-        @Override
-        public Boolean getSource() {
-            return source;
-        }
-
-        public void setSource(final Boolean source) {
-            this.source = source;
-        }
-
-    }
-
-    public static class MockAEvent extends BaseMockEvent {
-
-    }
-
-    public static class MockBEvent extends BaseMockEvent {
-
-    }
-
-    public static class MockCEvent extends BaseMockEvent {
-
-    }
-
 }
