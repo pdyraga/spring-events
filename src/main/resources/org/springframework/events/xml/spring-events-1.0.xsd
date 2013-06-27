@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xsd:schema xmlns="http://www.springframework.org/schema/events"
+            xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            targetNamespace="http://www.springframework.org/schema/events"
+            elementFormDefault="qualified" attributeFormDefault="unqualified">
+
+  <xsd:element name="annotation-config">
+    <xsd:annotation>
+        <xsd:documentation><![CDATA[
+	    Activates automatic detection of event handlers based on methods. Any bean object managed
+	    by Spring that has methods annotated with @EventHandler and accepting event type as
+	    parameter becomes registered as an event handler.
+		]]></xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+
+</xsd:schema>
