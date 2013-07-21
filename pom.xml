@@ -4,7 +4,7 @@
 
   <groupId>org.springframework</groupId>
   <artifactId>event-sourcing</artifactId>
-  <version>0.1-SNAPSHOT</version>
+  <version>0.1-M1</version>
 
   <name>Spring Framework Event Sourcing Library</name>
 
