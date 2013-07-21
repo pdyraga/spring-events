@@ -34,7 +34,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 public class EventHandlingIntegrationTest {
 
     @Autowired
-    private HasBroadcastEventHandlers publisher;
+    private EventBus publisher;
 
     @Test
     public void shouldPublishViaBroadcastPublisher() {
