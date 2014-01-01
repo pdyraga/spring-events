@@ -44,7 +44,7 @@ public class ThreadSafePublisherTest {
 
     @Before
     public void setUp() {
-        mockAEvent = new MockAEvent("A");
+        mockAEvent = new MockAEvent();
 
         this.mockDelegate = createMock(HasBroadcastEventHandlers.class);
         this.publisher = new ThreadSafePublisher(mockDelegate);

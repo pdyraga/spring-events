@@ -41,7 +41,7 @@ public class AbstractEventTest {
             }
         };
 
-        final Event event = new MockAEvent("");
+        final Event event = new MockAEvent();
         mockDelegate.onEventDispatched(same(event));
         expectLastCall();
 
@@ -59,7 +59,7 @@ public class AbstractEventTest {
             }
         };
 
-        new MockAEvent("").dispatch(handler);
+        new MockAEvent().dispatch(handler);
     }
 
     /**

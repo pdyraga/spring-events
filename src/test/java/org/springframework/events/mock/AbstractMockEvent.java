@@ -19,20 +19,9 @@ package org.springframework.events.mock;
 import org.springframework.events.Event;
 
 public abstract class AbstractMockEvent extends
-        Event.AbstractEvent<String> {
-
-    private final String source;
+        Event.AbstractEvent {
 
     private boolean handled;
-
-    public AbstractMockEvent(final String source) {
-        this.source = source;
-    }
-
-    @Override
-    public String getSource() {
-        return source;
-    }
 
     public boolean isHandled() {
         return handled;

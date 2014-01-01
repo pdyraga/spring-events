@@ -25,9 +25,6 @@ package org.springframework.events;
  * @author Piotr Dyraga
  * @since 0.1-RELEASE
  * @version %I%, %G%
- *
- * @param <T>
- *            subject of notification.
  */
 public interface Event {
 
@@ -43,18 +40,14 @@ public interface Event {
 
     /**
      * Base class for implementation of events. Provides implementation of event
-     * dispatching and possibility to get information
-     * about an object that reported its state change {@link #getSource()}.
+     * dispatching.
      *
      * @author Robert Bala
      * @since 0.1-RELEASE
      * @version %I%, %G%
      * @see Event
-     *
-     * @param <T>
-     *            subject of notification.
      */
-    abstract class AbstractEvent<T> implements Event {
+    abstract class AbstractEvent implements Event {
 
         /**
          * {@inheritDoc}
@@ -72,14 +65,6 @@ public interface Event {
                 throw new IllegalArgumentException("Inapplicable handler");
             }
         }
-
-        /**
-         * Gets event's associated source of state change.
-         *
-         * @return subject of notification.
-         */
-        public abstract T getSource();
-
     }
 
     /**

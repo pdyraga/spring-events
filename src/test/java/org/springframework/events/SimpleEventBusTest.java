@@ -37,9 +37,9 @@ public class SimpleEventBusTest {
 
     @Before
     public void setUp() {
-        mockAEvent = new MockAEvent("A");
-        mockBEvent = new MockBEvent("B");
-        mockCEvent = new MockCEvent("C");
+        mockAEvent = new MockAEvent();
+        mockBEvent = new MockBEvent();
+        mockCEvent = new MockCEvent();
     }
 
     @After

@@ -18,14 +18,4 @@ package org.springframework.events.mock;
 
 public final class MockCEvent extends AbstractMockEvent {
 
-    public MockCEvent() {
-        // it's not a good practice for production code,
-        // but here we have only mocks
-        super("UNKNOWN");
-    }
-
-    public MockCEvent(final String string) {
-        super(string);
-    }
-
 }
