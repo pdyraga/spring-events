@@ -23,6 +23,7 @@ import org.junit.Test;
 import org.springframework.events.HandlerRegistration;
 import org.springframework.events.HasBroadcastEventHandlers;
 import org.springframework.events.mock.MockAEvent;
+import org.springframework.events.mock.MockBEvent;
 import org.springframework.events.mock.MockHandler;
 import org.springframework.test.util.ReflectionTestUtils;
 
@@ -68,7 +69,7 @@ public class AnnotationEventHandlerPostProcessorTest {
     }
 
     @Test
-    public void shouldRemoveHandlerBeforeDestruction() {
+    public void shouldUnregisterHandlerBeforeDestruction() {
         final MockHandler<MockAEvent> bean =
                 new MockHandler<MockAEvent>();
 
@@ -82,9 +83,36 @@ public class AnnotationEventHandlerPostProcessorTest {
         mockHandlerRegistration.removeHandler();
         expectLastCall();
 
-        replay(mockEventBus);
+        replay(mockEventBus, mockHandlerRegistration);
         postProcessor.postProcessAfterInitialization(bean, "eventHandler");
         postProcessor.postProcessBeforeDestruction(bean, "eventHandler");
-        verify(mockEventBus);
+        verify(mockEventBus, mockHandlerRegistration);
+    }
+
+    @Test
+    public void shouldUnregisterOnlyDestroyedHandlerBeforeDestruction() {
+        final MockHandler<MockAEvent> handlerA = new MockHandler<MockAEvent>();
+        final MockHandler<MockBEvent> handlerB = new MockHandler<MockBEvent>();
+
+        final HandlerRegistration mockHandlerRegistrationA =
+                createMock(HandlerRegistration.class);
+        final HandlerRegistration mockHandlerRegistrationB =
+                createMock(HandlerRegistration.class);
+
+        // registering two handlers
+        expect(mockEventBus.addHandler(isA(EventHandlerAdapter.class)))
+                .andReturn(mockHandlerRegistrationA);
+        expect(mockEventBus.addHandler(isA(EventHandlerAdapter.class)))
+                .andReturn(mockHandlerRegistrationB);
+        // and now unregistering _only_one_ of them
+        mockHandlerRegistrationA.removeHandler();
+        expectLastCall();
+
+        replay(mockEventBus, mockHandlerRegistrationA, mockHandlerRegistrationB);
+        postProcessor.postProcessAfterInitialization(handlerA, "eventHandlerA");
+        postProcessor.postProcessAfterInitialization(handlerB, "eventHandlerB");
+        postProcessor.postProcessBeforeDestruction(handlerA, "eventHandlerA");
+        verify(mockEventBus, mockHandlerRegistrationA, mockHandlerRegistrationB);
+
     }
 }

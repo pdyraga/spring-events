@@ -17,8 +17,8 @@
 package org.springframework.events.context;
 
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,8 +48,8 @@ public final class AnnotationEventHandlerPostProcessor implements
     @Autowired
     private HasBroadcastEventHandlers publisher;
 
-    private final List<HandlerRegistration> adapters =
-        new ArrayList<HandlerRegistration>();
+    private final Map<String, HandlerRegistration> adapters =
+        new HashMap<String, HandlerRegistration>();
 
     /**
      * {@inheritDoc}
@@ -67,7 +67,7 @@ public final class AnnotationEventHandlerPostProcessor implements
     public Object postProcessAfterInitialization(final Object bean,
             final String beanName) throws BeansException {
         if (new HandlerInspectorHelper(bean).isHandler()) {
-            return registerHandler(bean);
+            return registerHandler(bean, beanName);
         }
 
         return bean;
@@ -79,9 +79,7 @@ public final class AnnotationEventHandlerPostProcessor implements
     @Override
     public void postProcessBeforeDestruction(final Object bean,
             final String beanName) throws BeansException {
-        for (final HandlerRegistration adapter : adapters) {
-            adapter.removeHandler();
-        }
+        adapters.get(beanName).removeHandler();
     }
 
     /**
@@ -90,11 +88,12 @@ public final class AnnotationEventHandlerPostProcessor implements
      * {@link org.springframework.events.HasBroadcastEventHandlers} observable object.
      *
      * @param bean reference to the bean that was identified as event handler
+     * @param beanName name of bean as it's identified in spring context
      * @return Spring's AOP proxy object.
      */
-    private Object registerHandler(final Object bean) {
+    private Object registerHandler(final Object bean, final String beanName) {
         final Handler<Event> adapter = new EventHandlerAdapter(bean);
-        adapters.add(publisher.addHandler(adapter));
+        adapters.put(beanName, publisher.addHandler(adapter));
         return AdapterIntroductionInterceptor.createAdapterProxy(bean,
                 adapter, Event.Handler.class);
     }
