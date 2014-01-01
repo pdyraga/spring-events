@@ -3,10 +3,10 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.springframework</groupId>
-  <artifactId>event-sourcing</artifactId>
+  <artifactId>events</artifactId>
   <version>0.1-SNAPSHOT</version>
 
-  <name>Spring Framework Event Sourcing Library</name>
+  <name>Spring Framework Event Communication Library</name>
 
   <properties>
     <maven.compiler.source>1.7</maven.compiler.source>
